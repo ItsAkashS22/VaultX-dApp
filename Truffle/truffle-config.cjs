@@ -1,6 +1,7 @@
 module.exports = {
-  contracts_directory: '../contracts',
+  contracts_directory: './contracts',
   contracts_build_directory: './build/contracts',
+  migrations_directory: './Truffle/migrations',
   // Uncommenting the defaults below
   // provides for an easier quick-start with Ganache.
   // You can also follow this format for other networks;
@@ -15,6 +16,17 @@ module.exports = {
       network_id: 1337,
       deploymentPollingInterval: 10,
     },
+  },
+  compilers: {
+    solc: {
+      version: "0.8.20",
+      settings: {
+        optimizer: {
+          enabled: true,
+          runs: 200
+        }
+      }
+    }
   },
   //
   // Truffle DB is currently disabled by default; to enable it, change enabled:
