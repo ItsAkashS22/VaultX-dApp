@@ -58,7 +58,14 @@ export default function GalleryItems() {
       <Grid container spacing={3}>
         {items.map((item) => (
           <Grid item xs={12} md={6} xl={4} key={item.id}>
-            <Box className="vx-card-strong card-lift" sx={{ overflow:'hidden', height:'100%' }}>
+            <Box
+              className="vx-card-strong card-lift"
+              role="button"
+              tabIndex={0}
+              onClick={() => { setSelectedAsset(item); setDrawerOpen(true); }}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { setSelectedAsset(item); setDrawerOpen(true); } }}
+              sx={{ overflow: 'hidden', height: '100%', cursor: 'pointer' }}
+            >
               <Box sx={{ position:'relative', height:260 }}>
                 <Box component="img" src={item.img} alt={item.name} sx={{ width:'100%', height:'100%', objectFit:'cover' }} />
                 <Box sx={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,19,17,.58), rgba(8,19,17,.06) 55%, rgba(8,19,17,.12))' }} />
@@ -94,8 +101,21 @@ export default function GalleryItems() {
                 <Typography sx={{ mt:1, fontSize:'13px', color:'var(--muted)' }}>{item.funded}% of allocation completed</Typography>
 
                 <Stack direction="row" spacing={1.5} sx={{ mt:3 }}>
-                  <Button variant="contained" fullWidth onClick={() => { setSelectedAsset(item); setDrawerOpen(true); }}>View Asset</Button>
-                  <Button variant="outlined" fullWidth sx={{ borderRadius:'999px', borderColor:'rgba(228,211,169,.18)', color:'var(--text)', textTransform:'none', '&:hover':{ borderColor:'rgba(215,181,109,.34)', background:'rgba(255,255,255,.03)' } }}>Tokenize</Button>
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    onClick={(e) => { e.stopPropagation(); setSelectedAsset(item); setDrawerOpen(true); }}
+                  >
+                    View Asset
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    onClick={(e) => { e.stopPropagation(); /* placeholder for Tokenize action */ }}
+                    sx={{ borderRadius:'999px', borderColor:'rgba(228,211,169,.18)', color:'var(--text)', textTransform:'none', '&:hover':{ borderColor:'rgba(215,181,109,.34)', background:'rgba(255,255,255,.03)' } }}
+                  >
+                    Tokenize
+                  </Button>
                 </Stack>
               </Box>
             </Box>
