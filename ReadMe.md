@@ -156,6 +156,37 @@ I added a standalone **Treasury Ledger contract** to track VaultX treasury alloc
 
 This improves **on-chain transparency for RWA fund allocation tracking**.
 
+<table width="100%">
+  <tr>
+    <td align="center" colspan="2">
+      <strong>Smart Contract Deployment and Execution</strong>
+    </td>
+  </tr>
+
+  <tr>
+    <td width="50%" align="center" style="vertical-align: top;">
+      <div style="width:100%; overflow:hidden;">
+        <img 
+          src="screenshots/VaultXTreasury-Deployment.png" 
+          style="width: 100%; height: auto; object-fit: contain;" 
+        />
+      </div>
+      <br/>
+      <strong>Deployment</strong>
+    </td>
+    <td width="50%" align="center" style="vertical-align: top;">
+      <div style="width:100%; overflow:hidden;">
+        <img 
+          src="screenshots/VaultXTreasury-Execution.png" 
+          style="width: 100%; height: auto; object-fit: contain;" 
+        />
+      </div>
+      <br/>
+      <strong>Execution</strong>
+    </td>
+  </tr>
+</table>
+
 ## ⚙️ Installation, Compile & Test Instructions
 
 ### 1. Compile contracts
@@ -257,9 +288,7 @@ update status 1n
 contracts/VaultXTreasuryLedger.sol
 ```
 
----
-
-## 🧱 Core Data Structure
+## Core Data Structure
 
 ### AllocationRecord
 
@@ -272,7 +301,7 @@ contracts/VaultXTreasuryLedger.sol
 
 ---
 
-## ⚙️ Core Functions
+## Core Functions
 
 ### 1. createAllocationRecord
 
@@ -290,9 +319,7 @@ Fetches a specific allocation entry.
 
 Returns total number of records.
 
----
-
-## 🔐 Validation Rules
+## Validation Rules
 
 - Only contract owner can create records
 - Only owner can update status
@@ -302,29 +329,14 @@ Returns total number of records.
 
 ---
 
-## 📡 Events
+## Events
 
 - AllocationRecordCreated
 - AllocationRecordStatusUpdated
 
----
-
-## 📦 Expected Outcomes
+## Expected Outcomes
 
 - [x] Contract compiles successfully
 - [x] Owner-controlled treasury logging
 - [x] Independent from presale/token logic
 - [x] Transparent on-chain accounting structure
-
----
-
-# 📌 Final Notes
-
-- FE-11 enhances **user investment experience**
-- SC-13 enhances **on-chain treasury transparency**
-- Both modules are independent, non-blocking PoC upgrades
-- No backend dependency required
-
-```
-
-```
