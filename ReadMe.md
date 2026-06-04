@@ -10,7 +10,6 @@ These tasks improve both the **user-facing investment experience** and the **on-
 <br>
 <img src="screenshots/VaultX-Home.png" style="width: 100%; height: auto;" />
 <br>
-<br>
 
 # Task 1 - FE-11: Investor-Focused Asset Detail Drawer (Frontend)
 
@@ -150,10 +149,8 @@ If wallet is **not connected**:
 - [x] Improved investment clarity and UX
 
 <br>
-<br>
-<br>
 
-# ⛓️ Task 2 — SC-13: VaultXTreasuryLedger Smart Contract (Solidity)
+# Task 2 — SC-13: VaultXTreasuryLedger Smart Contract (Solidity)
 
 ## 🎯 Objective
 
