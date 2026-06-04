@@ -22,16 +22,16 @@ export default function AssetMetricGrid({ asset = {} }) {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={6}>
         <MetricCard label="Target APY" value={apy} />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={6}>
         <MetricCard label="Occupancy" value={occupancy} />
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={6}>
         <MetricCard label="Funding Progress" value={`${funding}%`}/>
       </Grid>
-      <Grid item xs={12} sm={6}>
+      <Grid item xs={6}>
         <MetricCard label="Minimum participation" value={minimum} />
       </Grid>
     </Grid>

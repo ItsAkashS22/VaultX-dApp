@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AssetDetailDrawer from 'components/assets/AssetDetailDrawer';
 import { brandImages, showcaseAssets } from 'assets/remoteImages';
 
 function MiniStat({ label, value }) {
@@ -11,10 +12,16 @@ function MiniStat({ label, value }) {
   );
 }
 
-function AssetCard({ asset, active, setActive }) {
-  const navigate = useNavigate();
+function AssetCard({ asset, active, setActive, onOpenDrawer }) {
   return (
-    <div className="vx-card-strong" style={{ overflow: 'hidden' }}>
+    <div
+      className="vx-card-strong"
+      role="button"
+      tabIndex={0}
+      onClick={onOpenDrawer}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpenDrawer(); } }}
+      style={{ overflow: 'hidden', cursor: 'pointer' }}
+    >
       <div style={{ position: 'relative', height: 320 }}>
         <img src={asset.img} alt={asset.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(8,19,17,.72) 0%, rgba(8,19,17,.06) 56%, rgba(8,19,17,.08) 100%)' }} />
@@ -53,13 +60,13 @@ function AssetCard({ asset, active, setActive }) {
             <strong style={{ color: 'var(--gold-2)' }}>{asset.tokenPrice}</strong>
           </div>
         </div>
-        <button className="vx-btn" onClick={() => navigate('/presale')} style={{ width: '100%' }}>Enter Presale</button>
+        <button className="vx-btn" onClick={(e) => { e.stopPropagation(); onOpenDrawer(); }} style={{ width: '100%' }}>Enter Presale</button>
         <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 18 }}>
           {showcaseAssets.map((_, i) => (
             <button
               key={i}
               aria-label={`Select asset ${i + 1}`}
-              onClick={() => setActive(i)}
+              onClick={(e) => { e.stopPropagation(); setActive(i); }}
               style={{
                 width: active === i ? 28 : 8,
                 height: 8,
@@ -78,6 +85,8 @@ function AssetCard({ asset, active, setActive }) {
 
 export default function HeroSection() {
   const [active, setActive] = useState(0);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedAsset, setSelectedAsset] = useState(null);
   const navigate = useNavigate();
   const asset = showcaseAssets[active];
 
@@ -111,8 +120,9 @@ export default function HeroSection() {
             <MiniStat label="Presale rate" value="2M VTX" />
           </div>
         </div>
-        <AssetCard asset={asset} active={active} setActive={setActive} />
+        <AssetCard asset={asset} active={active} setActive={setActive} onOpenDrawer={() => { setSelectedAsset(asset); setDrawerOpen(true); }} />
       </div>
+      <AssetDetailDrawer open={drawerOpen} asset={selectedAsset || asset} onClose={() => setDrawerOpen(false)} />
       <style>{`@media(max-width:980px){section .vx-container{grid-template-columns:1fr!important}.vx-card{grid-template-columns:1fr!important}}`}</style>
     </section>
   );

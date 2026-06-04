@@ -24,6 +24,12 @@ export const showcaseAssets = [
     tags: ['Income Asset', 'Regulated RWA'],
     specs: { units: '124', occupancy: '96%', yield: '8.8%' },
     raise: '72%',
+    type: 'Multifamily',
+    status: 'Open',
+    apy: '8.8%',
+    min: '$500',
+    funded: 72,
+    memo: 'Income-producing multifamily property with strong occupancy and stable cash flows.',
   },
   {
     id: 'VX-DAL-004',
@@ -35,6 +41,12 @@ export const showcaseAssets = [
     tags: ['Commercial', 'Lease-Backed'],
     specs: { units: '1', occupancy: '100%', yield: '9.6%' },
     raise: '64%',
+    type: 'Logistics',
+    status: 'Open',
+    apy: '9.6%',
+    min: '$1,000',
+    funded: 64,
+    memo: 'Single-tenant, lease-backed warehouse asset positioned for strong industrial demand.',
   },
   {
     id: 'VX-AUS-009',
@@ -46,6 +58,12 @@ export const showcaseAssets = [
     tags: ['Portfolio', 'Quarterly Yield'],
     specs: { units: '38', occupancy: '94%', yield: '7.9%' },
     raise: '81%',
+    type: 'Mixed-use',
+    status: 'Priority',
+    apy: '7.9%',
+    min: '$750',
+    funded: 81,
+    memo: 'Diversified mixed-use portfolio with recurring income from retail and residential leases.',
   },
 ];
 
