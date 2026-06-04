@@ -1,225 +1,264 @@
-# VaultX PoC Functionality README
+# VaultX RWA dApp — Implementation Summary
 
-## Overview
+I have completed two core implementation tasks for the VaultX Real World Asset (RWA) proof-of-concept platform:
 
-VaultX is a Real World Asset (RWA) proof-of-concept dApp.
+1. **Frontend Enhancement Task (FE-11)** - Investor-focused Asset Detail Drawer
+2. **Smart Contract Task (SC-13)** - VaultX Treasury Ledger Contract
 
-The current PoC includes:
+These tasks improve both the **user-facing investment experience** and the **on-chain treasury transparency layer**, without requiring backend dependencies.
 
-- React frontend
-- Wallet connection
-- RWA asset gallery
-- VaultX presale page
-- Contracts information modal
-- Contact page
-- Solidity token and presale contracts
+<br>
+<img src="screenshots/VaultX-Home.png" style="width: 100%; height: auto;" />
+<br>
+<br>
 
-The project is a technical PoC, not a final production platform.
+# Task 1 - FE-11: Investor-Focused Asset Detail Drawer (Frontend)
 
----
+### Objective
 
-## Main Frontend Features
+I enhanced the VaultX frontend by adding an **investor-grade asset detail drawer**, allowing users to view structured RWA asset data beyond basic marketing-style asset cards.
 
-### Home Page
+This feature upgrades the platform from a visual showcase into a **decision-ready investment interface**.
 
-The home page introduces VaultX as an RWA platform.
+<table width="100%">
+  <tr>
+    <td align="center" colspan="2">
+      <strong>Desktop View</strong>
+    </td>
+  </tr>
 
-It shows:
+  <tr>
+    <td width="50%" align="center" style="vertical-align: top;">
+        <img 
+          src="screenshots/VaultX-desktop-disconnected.png"
+        />
+      <br/>
+      <strong>Wallet Not Connected</strong>
+    </td>
+    <td width="50%" align="center" style="vertical-align: top;">
+        <img 
+          src="screenshots/VaultX-desktop-connected.png"
+        />
+      <br/>
+      <strong>Wallet Connected</strong>
+    </td>
+  </tr>
+</table>
 
-- Hero section
-- Featured assets
-- Platform statistics
-- Tokenomics summary
-- How it works
-- Roadmap-style content
+<br>
 
-### Wallet Connection
+<table width="100%">
+  <tr>
+    <td align="center" colspan="2">
+      <strong>Mobile View</strong>
+    </td>
+  </tr>
 
-The app supports browser wallets through injected wallet providers.
+  <tr>
+    <td width="50%" align="center" style="vertical-align: top;">
+        <img 
+          src="screenshots/VaultX-mobile-disconnected.png"
+        />
+      <br/>
+      <strong>Wallet Not Connected</strong>
+    </td>
+    <td width="50%" align="center" style="vertical-align: top;">
+        <img 
+          src="screenshots/VaultX-mobile-connected.png"
+        />
+      <br/>
+      <strong>Wallet Connected</strong>
+    </td>
+  </tr>
+</table>
 
-Supported wallet types:
+<br>
 
-- MetaMask
-- Rabby
-- Coinbase Wallet extension
-- Other injected EIP-1193 wallets
+## Installation & Run Instructions
 
-Wallet connection is required before Web3 actions.
-
-### Presale Page
-
-The presale page connects the frontend to the VaultX presale contract.
-
-The page should:
-
-- Detect connected wallet
-- Detect current chain
-- Check presale contract address
-- Read presale status
-- Show buyer position
-- Allow deposit only when the sale is active
-- Allow claim only after successful sale
-- Allow refund only after failed sale
-
-If wallet or contract config is missing, actions should stay disabled.
-
-### Contracts Modal
-
-The Contracts modal shows VaultX contract/address information.
-
-It should show:
-
-- Public VaultX address
-- Token contract address
-- Presale contract address
-- Asset registry status
-- Proxy/admin status
-
-The modal should not show old testnet or unrelated addresses.
-
-### Gallery Page
-
-The Gallery page displays RWA asset cards.
-
-Asset cards can show:
-
-- Asset ID
-- Asset name
-- Asset type
-- Location
-- Target APY
-- Occupancy
-- Funding progress
-- Asset image
-
-### Other Pages
-
-The PoC also includes:
-
-- Stake page
-- Swap page
-- Mint page
-- NFT holdings page
-- Transactions page
-- Contact page
-
-Some of these pages may remain inactive until real contracts or backend APIs are connected.
-
----
-
-## Solidity Features
-
-### VaultXToken
-
-The VTX token contract is used for the presale and buyer allocation.
-
-Expected functionality:
-
-- Token name
-- Token symbol
-- Decimals
-- Total supply
-- Token transfers
-
-### VaultXPresale
-
-The presale contract manages purchase, claim, and refund logic.
-
-Expected functionality:
-
-- Accept deposits through `deposit()`
-- Reject direct ETH/BNB transfers
-- Calculate VTX amount from payment amount
-- Track buyer contribution
-- Track purchased tokens
-- Track claimed tokens
-- Track refund status
-- Allow claim after successful sale
-- Allow refund after failed sale
-- Prevent claim/refund overlap
-- Prevent owner from withdrawing buyer-reserved tokens
-
----
-
-## Environment Configuration
-
-Example frontend environment variables:
-
-```env
-VITE_TOKEN_ADDRESS_11155111=0xYourTokenAddress
-VITE_PRESALE_ADDRESS_11155111=0xYourPresaleAddress
-VITE_PUBLIC_VAULTX_ADDRESS=0xBb569C738f56348B21a84D520f679fe41Fd01cc5
-```
-
-If contract addresses are missing, Web3 actions should remain disabled.
-
----
-
-## Local Development
-
-Install dependencies:
+### 1. Install dependencies
 
 ```bash
 npm install
 ```
 
-Run the frontend:
+### 2. Run frontend
 
 ```bash
 npm run dev
 ```
 
-Open:
+### 3. Open application
 
 ```text
 http://localhost:5173
 ```
 
-Presale route:
+## Implementation Details
+
+### New Components Added
 
 ```text
-http://localhost:5173/presale
+src/components/assets/AssetDetailDrawer.jsx
+src/components/assets/AssetMetricGrid.jsx
+src/components/assets/AssetRiskSummary.jsx
+src/components/assets/AssetActionPanel.jsx
+```
+
+### Updated Components
+
+```text
+src/components/gallery/GalleryItems.jsx
+src/components/home/HeroSection.jsx
+```
+
+## Investor Data Displayed
+
+The Asset Detail Drawer displays structured RWA investment data:
+
+- Asset ID
+- Asset Name
+- Asset Type
+- Location
+- Target APY
+- Occupancy
+- Funding Progress
+- Minimum Participation Amount
+- Risk Level
+- Asset Memo
+- Investment Status
+
+## Action Panel Behavior
+
+- View Details
+- Request Access
+- Go to Presale
+
+### Wallet Rules
+
+If wallet is **not connected**:
+
+- Disable investment actions
+- Show message: **Connect Wallet Required**
+
+## Expected Outcomes
+
+- [x] Asset card opens detailed drawer on click
+- [x] Investor-focused structured asset view
+- [x] No backend dependency required
+- [x] Wallet-gated investment actions
+- [x] Improved investment clarity and UX
+
+<br>
+<br>
+<br>
+
+# ⛓️ Task 2 — SC-13: VaultXTreasuryLedger Smart Contract (Solidity)
+
+## 🎯 Objective
+
+I added a standalone **Treasury Ledger contract** to track VaultX treasury allocation categories, reference metadata, and governance-level accounting records.
+
+This improves **on-chain transparency for RWA fund allocation tracking**.
+
+---
+
+## ⚙️ Installation & Compile Instructions
+
+### 1. Compile contracts
+
+```bash
+npx truffle compile --all
+```
+
+### 2. Start local blockchain
+
+```bash
+ganache -p 7545
+```
+
+### 3. Deploy contracts
+
+```bash
+npx truffle migrate --reset --network development
 ```
 
 ---
 
-## Basic Testing Checklist
+## 📂 Contract Added
 
-Check these items:
-
-- Home page loads
-- `/presale` route works
-- Wallet connect works
-- Wallet address appears after connection
-- Contracts modal opens and scrolls
-- Contracts modal shows VaultX data only
-- Presale buttons are disabled before wallet connection
-- Presale buttons are disabled when contract address is missing
-- Browser tab shows VaultX favicon
+```text
+contracts/VaultXTreasuryLedger.sol
+```
 
 ---
 
-## Current PoC Limitations
+## 🧱 Core Data Structure
 
-The current project may still need:
+### AllocationRecord
 
-- Backend API
-- Asset registry contract
-- Investor allowlist
-- Stablecoin payment support
-- Full dashboard
-- Contract test coverage
-- Deployment scripts
-- Security audit
+- category (string)
+- amount (uint256)
+- referenceURI (string)
+- referenceHash (bytes32)
+- createdAt (uint256)
+- active (bool)
 
 ---
 
-## Project Goal
+## ⚙️ Core Functions
 
-The goal of this PoC is to show a realistic RWA dApp foundation where:
+### 1. createAllocationRecord
 
-- Users can connect wallets
-- RWA assets are displayed professionally
-- Presale logic is contract-driven
-- Contract information is visible
-- Web3 actions are properly gated
+Creates a new treasury allocation entry.
+
+### 2. updateAllocationStatus
+
+Activates or deactivates a record.
+
+### 3. getAllocationRecord
+
+Fetches a specific allocation entry.
+
+### 4. getAllocationRecordCount
+
+Returns total number of records.
+
+---
+
+## 🔐 Validation Rules
+
+- Only contract owner can create records
+- Only owner can update status
+- Category cannot be empty
+- Amount must be > 0
+- Record must exist
+
+---
+
+## 📡 Events
+
+- AllocationRecordCreated
+- AllocationRecordStatusUpdated
+
+---
+
+## 📦 Expected Outcomes
+
+- [x] Contract compiles successfully
+- [x] Owner-controlled treasury logging
+- [x] Independent from presale/token logic
+- [x] Transparent on-chain accounting structure
+
+---
+
+# 📌 Final Notes
+
+- FE-11 enhances **user investment experience**
+- SC-13 enhances **on-chain treasury transparency**
+- Both modules are independent, non-blocking PoC upgrades
+- No backend dependency required
+
+```
+
+```
