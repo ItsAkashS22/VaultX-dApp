@@ -152,37 +152,106 @@ If wallet is **not connected**:
 
 # Task 2 — SC-13: VaultXTreasuryLedger Smart Contract (Solidity)
 
-## 🎯 Objective
-
 I added a standalone **Treasury Ledger contract** to track VaultX treasury allocation categories, reference metadata, and governance-level accounting records.
 
 This improves **on-chain transparency for RWA fund allocation tracking**.
 
----
-
-## ⚙️ Installation & Compile Instructions
+## ⚙️ Installation, Compile & Test Instructions
 
 ### 1. Compile contracts
 
 ```bash
-npx truffle compile --all
+npx truffle compile --config Truffle/truffle-config.cjs --all
 ```
 
 ### 2. Start local blockchain
 
 ```bash
-ganache -p 7545
+ganache-cli -d --db data -i 1337 --port 7545
 ```
 
 ### 3. Deploy contracts
 
 ```bash
-npx truffle migrate --reset --network development
+npx truffle migrate --reset --network develop --config Truffle/truffle-config.cjs
 ```
 
----
+### 4. Run Web3 Validation Script
 
-## 📂 Contract Added
+Run the following script from the **repo root** to validate contract deployment and functionality:
+
+```bash
+node --input-type=module <<'NODE'
+import fs from 'fs';
+import Web3 from 'web3';
+
+const artifact = JSON.parse(
+  fs.readFileSync('./build/contracts/VaultXTreasuryLedger.json','utf8')
+);
+
+const address = artifact.networks['1337'].address;
+const web3 = new Web3('http://127.0.0.1:7545');
+
+const accounts = await web3.eth.getAccounts();
+const owner = accounts[0];
+
+const contract = new web3.eth.Contract(artifact.abi, address);
+
+// Create allocation record
+const createTx = await contract.methods
+  .createAllocationRecord(
+    'Operations',
+    web3.utils.toWei('1','ether'),
+    'ipfs://ops',
+    web3.utils.keccak256('ops')
+  )
+  .send({ from: owner, gas: 500000 });
+
+console.log('create status', createTx.status);
+
+// Read record
+const record = await contract.methods.getAllocationRecord(0).call();
+console.log('record', record);
+
+// Get count
+const count = await contract.methods.getAllocationRecordCount().call();
+console.log('count', count);
+
+// Update status
+const updateTx = await contract.methods
+  .updateAllocationStatus(0, false)
+  .send({ from: owner, gas: 200000 });
+
+console.log('update status', updateTx.status);
+NODE
+```
+
+### 5. Expected Output
+
+```bash
+create status 1n
+
+record {
+  '0': 'Operations',
+  '1': 1000000000000000000n,
+  '2': 'ipfs://ops',
+  '3': '0x648c1041397070b6773cd376c40d6c1919cba81c9174b0a822ac0f4174eaf131',
+  '4': 1780529031n,
+  '5': true,
+  __length__: 6,
+  category: 'Operations',
+  amount: 1000000000000000000n,
+  referenceURI: 'ipfs://ops',
+  referenceHash: '0x648c1041397070b6773cd376c40d6c1919cba81c9174b0a822ac0f4174eaf131',
+  createdAt: 1780529031n,
+  active: true
+}
+
+count 1n
+update status 1n
+```
+
+## Contract Added
 
 ```text
 contracts/VaultXTreasuryLedger.sol
